@@ -68,32 +68,53 @@ glimpse(music)
 
 -   Identify the source of the data.
 
+    This data came from the Coffee Quality Institute's review pages. 
+
 -   State when and how it was originally collected (by the original data curator, not necessarily how you found the data).
 
+    The data was collected in January 2018 by James LeDoux who created the Coffee Quality Database and pulled variables from review pages. 
+
 -   Write a brief description of the observations.
+
+    The Coffee Ratings dataset has 990 observations with each observation being a review of coffee beans by one of the Coffee Quality Institute's reviewers. The reviewer rates the coffee based upon different quality measures like flavor, aroma, and sweetness. Each observation also has information about the coffee bean like color and farm data like where it was grown, altitude grown at and region. 
 
 ## Research question
 
 -   A well formulated research question. (You may include more than one research question if you want to receive feedback on different ideas for your project. However, one per data set is required.)
 
+    Does the species or the average altitude of where coffee was grown have a greater impact on the flavor score given to coffee by a reviewer?
+
 -   A description of the research topic along with a concise statement of your hypotheses on this topic.
 
+    Within this topic, we are researching whether just the species influences a better flavor score on a scale from 0-10 or if average altitude of where the coffee was grown influences a better flavor score on a scale from 0-10. This will help us determine if a certain species leads reviewers to rank the flavor score higher or if the altitude of where a species was grown changes the flavor score to be higher or lower. Our hypothesis is that species alone, no matter the altitude, influences a greater flavor score.
+
 -   Identify the types of variables in your research question. Categorical? Quantitative?
+
+    Species is a categorical variable. Average altitude and flavor score are quantitative variables.
 
 ## Literature
 
 -   Find one published credible article on the topic you are interested in researching.
 
+    Ana Paula Pereira Bressani, Silvia Juliana Martinez, Nádia Nara Batista, João Batista Pavesi Simão, Disney Ribeiro Dias, Rosane Freitas Schwan, Co-inoculation of yeasts starters: A strategy to improve quality of low altitude Arabica coffee, Food Chemistry, Volume 361, 2021, 130133, ISSN 0308-8146,<https://doi.org/10.1016/j.foodchem.2021.130133>. 
+
 -   Provide a one paragraph summary about the article.
 
+    This article is examining how the quality of coffee of the species Arabica could be improved when grown at low altitudes. The scope of the article discusses using yeast inoculation but also describes the impact of altitude on coffee flavor in a specific species. It states that Arabica is a very popular species due to its sweet flavor elements. Flavor is determined by volatile compounds in the coffee which is influenced by factors like geographical origin, climate, altitude, species, harvesting method, processing and storage. The researchers have determined altitude to be an extremely important piece of determining flavor, especially at lower altitude. 
+
 -   In 1-2 sentences, explain how your research question builds on / is different than the article you have cited.
+
+    Our research question builds on the article as we are examining more species than just Arabica and determining if altitude is the most important factor instead of just an important factor by looking at the average of altitude and not just low altitude.
 
 ## Glimpse of data
 
 ```{r}
 #| label: load-data-2
 
-# add code here
+coffee <- read_csv("data/coffee.csv")
+
+
+glimpse(coffee)
 ```
 
 # Data 3
