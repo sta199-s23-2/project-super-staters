@@ -170,20 +170,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#introduction-and-data" id="toc-introduction-and-data" class="nav-link" data-scroll-target="#introduction-and-data">Introduction and data</a></li>
   <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question">Research question</a></li>
+  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature">Literature</a></li>
   <li><a href="#glimpse-of-data" id="toc-glimpse-of-data" class="nav-link" data-scroll-target="#glimpse-of-data">Glimpse of data</a></li>
   </ul></li>
   <li><a href="#data-2" id="toc-data-2" class="nav-link" data-scroll-target="#data-2">Data 2</a>
   <ul class="collapse">
   <li><a href="#introduction-and-data-1" id="toc-introduction-and-data-1" class="nav-link" data-scroll-target="#introduction-and-data-1">Introduction and data</a></li>
   <li><a href="#research-question-1" id="toc-research-question-1" class="nav-link" data-scroll-target="#research-question-1">Research question</a></li>
-  <li><a href="#literature" id="toc-literature" class="nav-link" data-scroll-target="#literature">Literature</a></li>
+  <li><a href="#literature-1" id="toc-literature-1" class="nav-link" data-scroll-target="#literature-1">Literature</a></li>
   <li><a href="#glimpse-of-data-1" id="toc-glimpse-of-data-1" class="nav-link" data-scroll-target="#glimpse-of-data-1">Glimpse of data</a></li>
   </ul></li>
   <li><a href="#data-3" id="toc-data-3" class="nav-link" data-scroll-target="#data-3">Data 3</a>
   <ul class="collapse">
   <li><a href="#introduction-and-data-2" id="toc-introduction-and-data-2" class="nav-link" data-scroll-target="#introduction-and-data-2">Introduction and data</a></li>
   <li><a href="#research-question-2" id="toc-research-question-2" class="nav-link" data-scroll-target="#research-question-2">Research question</a></li>
-  <li><a href="#literature-1" id="toc-literature-1" class="nav-link" data-scroll-target="#literature-1">Literature</a></li>
+  <li><a href="#literature-2" id="toc-literature-2" class="nav-link" data-scroll-target="#literature-2">Literature</a></li>
   <li><a href="#glimpse-of-data-2" id="toc-glimpse-of-data-2" class="nav-link" data-scroll-target="#glimpse-of-data-2">Glimpse of data</a></li>
   </ul></li>
   </ul>
@@ -219,35 +220,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>Identify the source of the data.</p>
 <p>The source of this data is the Million Song Dataset.</p></li>
-<li><p>State when and how it was originally collected (by the original data curator, not necessarily how you found the data).</p></li>
+<li><p>State when and how it was originally collected (by the original data curator, not necessarily how you found the data).</p>
+<p>There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening. It was collected in 2011.**</p></li>
+<li><p>Write a brief description of the observations.</p>
+<p>A brief description of the observations in this data set is that there are different songs associated by a song ID and their respective artists that also have an artist ID.</p></li>
 </ul>
-<p>There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening. It was collected in 2011.**</p>
-<ul>
-<li>Write a brief description of the observations.</li>
-</ul>
-<p>A brief description of the observations in this data set is that there are different songs associated by a song ID and their respective artists that also have an artist ID.</p>
 </section>
 <section id="research-question" class="level2">
 <h2 class="anchored" data-anchor-id="research-question">Research question</h2>
 <ul>
-<li>A well formulated research question. (You may include more than one research question if you want to receive feedback on different ideas for your project. However, one per data set is required.)</li>
+<li><p>A well formulated research question. (You may include more than one research question if you want to receive feedback on different ideas for your project. However, one per data set is required.)</p>
+<p>How does the relationship between tempo and song popularity differ by the genre associated with the artist (artist.terms)?</p></li>
+<li><p>A description of the research topic along with a concise statement of your hypotheses on this topic.</p>
+<p>We will take a look at the relationship between the tempos of songs and their popularity by four specific genres (rap, techno, country, rock) associated with the artists. After looking into this relationship, we will be able to establish if certain genres are more or less popular due to faster or slower tempos. We predict that rock and techno songs will have a strong positive relationship between tempo and popularity and that rap and country will still have a positive relationship, but not a strong one.</p></li>
+<li><p>Identify the types of variables in your research question. Categorical? Quantitative?The categorical variable is genre associated with artist (artist.terms). The quantitative variables are tempo and popularity.</p></li>
 </ul>
-<p>How does the relationship between tempo and song popularity differ by the genre associated with the artist (artist.terms)?</p>
+</section>
+<section id="literature" class="level2">
+<h2 class="anchored" data-anchor-id="literature">Literature</h2>
 <ul>
-<li>A description of the research topic along with a concise statement of your hypotheses on this topic.</li>
+<li><p>Find one published credible article on the topic you are interested in researching.</p>
+<p>Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor’s thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf</p></li>
+<li><p>Provide a one paragraph summary about the article.</p>
+<p><em>Prediction of product success: explaining song popularity by audio features from Spotify data</em> attempts to explore the relation between song attributes such as tempo and key signature, as well as the number of plays on Spotify, the popular music-streaming platform. This paper uses a dataset of 1000 songs to investigate this question. Ultimately, the researchers find that there is only a fairly limited relation between song popularity (measured in stream count) and song features. In particular, the paper finds that tempo, which is the variable that we are most interested in, has no significant relation to stream count.</p></li>
+<li><p>In 1-2 sentences, explain how your research question builds on / is different than the article you have cited.</p>
+<p>Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if a relation can be found conditional upon the genre (not an audio feature) associated with the artist a song.</p></li>
 </ul>
-<p>We will take a look at the relationship between the tempos of songs and their popularity by four specific genres (rap, techno, country, rock) associated with the artists. After looking into this relationship, we will be able to establish if certain genres are more or less popular due to faster or slower tempos. We predict that rock and techno songs will have a strong positive relationship between tempo and popularity and that rap and country will still have a positive relationship, but not a strong one.</p>
-<ul>
-<li>Identify the types of variables in your research question. Categorical? Quantitative?</li>
-</ul>
-<p>The categorical variable is genre associated with artist (artist.terms). The quantitative variables are tempo and popularity.</p>
-<p>Literature</p>
-<ul>
-<li><p>Find one published credible article on the topic you are interested in researching.</p></li>
-<li><p>Provide a one paragraph summary about the article.</p></li>
-<li><p>In 1-2 sentences, explain how your research question builds on / is different than the article you have cited.</p></li>
-</ul>
-<p>Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if the genre (not an audio feature) reveals a relationship.</p>
 </section>
 <section id="glimpse-of-data" class="level2">
 <h2 class="anchored" data-anchor-id="glimpse-of-data">Glimpse of data</h2>
@@ -330,8 +328,8 @@ $ song.year                      &lt;dbl&gt; 0, 1969, 0, 1982, 2007, 0, 0, 0, 19
 <p>Species is a categorical variable. Average altitude and flavor score are quantitative variables.</p></li>
 </ul>
 </section>
-<section id="literature" class="level2">
-<h2 class="anchored" data-anchor-id="literature">Literature</h2>
+<section id="literature-1" class="level2">
+<h2 class="anchored" data-anchor-id="literature-1">Literature</h2>
 <ul>
 <li><p>Find one published credible article on the topic you are interested in researching.</p>
 <p>Ana Paula Pereira Bressani, Silvia Juliana Martinez, Nádia Nara Batista, João Batista Pavesi Simão, Disney Ribeiro Dias, Rosane Freitas Schwan, Co-inoculation of yeasts starters: A strategy to improve quality of low altitude Arabica coffee, Food Chemistry, Volume 361, 2021, 130133, ISSN 0308-8146,<a href="https://doi.org/10.1016/j.foodchem.2021.130133" class="uri">https://doi.org/10.1016/j.foodchem.2021.130133</a>.&nbsp;</p></li>
@@ -404,8 +402,8 @@ $ Data.Color                       &lt;chr&gt; "Unknown", "Unknown", "Unknown", 
 <li><p>Identify the types of variables in your research question. Categorical? Quantitative?</p></li>
 </ul>
 </section>
-<section id="literature-1" class="level2">
-<h2 class="anchored" data-anchor-id="literature-1">Literature</h2>
+<section id="literature-2" class="level2">
+<h2 class="anchored" data-anchor-id="literature-2">Literature</h2>
 <ul>
 <li><p>Find one published credible article on the topic you are interested in researching.</p></li>
 <li><p>Provide a one paragraph summary about the article.</p></li>
