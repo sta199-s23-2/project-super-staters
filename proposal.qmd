@@ -129,7 +129,7 @@ glimpse(coffee)
 
 -   State when and how it was originally collected (by the original data curator, not necessarily how you found the data).
 
-    It was originally collected in 2011 by Dr. Joe Cox from the crowd-sourced data on \"How Long to Beat\". The date for the lifetime unit sales of games released variable was collected from an online database maintained by VGChartz. 
+    It was originally collected in 2011 by Dr. Joe Cox from the crowd-sourced data on "How Long to Beat". The date for the lifetime unit sales of games released variable was collected from an online database maintained by VGChartz. 
 
 -   Write a brief description of the observations.
 
@@ -143,7 +143,7 @@ glimpse(coffee)
 
 -   A description of the research topic along with a concise statement of your hypotheses on this topic.
 
-    Our research topic considers how different factors, like time spent playing a video game or its availability, affect the game\'s sales performance. Total sales of the game is measured in millions of dollars, availability is measured on whether the game is available on multiple platforms, with a value of \"True\" if it is and \"False\" if it isn\'t, and time is measured in hours. Our hypothesis is ??????????? NOT FNISHED HERE NOT FINISHED HERE
+    Our research topic considers how different factors, like time spent playing a video game or its availability, affect the game's sales performance. Total sales of the game is measured in millions of dollars, availability is measured on whether the game is available on multiple platforms, with a value of "True" if it is and "False" if it isn't, and time is measured in hours. Our hypothesis is ??????????? NOT FNISHED HERE NOT FINISHED HERE
 
 -   Identify the types of variables in your research question. Categorical? Quantitative?
 
@@ -161,7 +161,7 @@ glimpse(coffee)
 
 -   Provide a one paragraph summary about the article.
 
-    "Uncertainty in the Movie Industry: Does Star Power Reduce the Terror of the Box Office?" by De Vany, Arthur and Walls, W. David, explores the role of movie stars in reducing uncertainty in the movie industry. The authors examine the relationship between the presence of \"stars\" or A-List actors in movies, and their box office performance. Their findings are that star power can reduce the uncertainty associated with box office success, but only up to a certain point - their ability to influence a film\'s performance in the box office is limited. The study also highlights the importance of other factors such as genre, quality, and marketing in determining box office success. Overall, the paper provides insights into the complex nature of the movie industry and the factors that influence moviegoers' decision-making.
+    "Uncertainty in the Movie Industry: Does Star Power Reduce the Terror of the Box Office?" by De Vany, Arthur and Walls, W. David, explores the role of movie stars in reducing uncertainty in the movie industry. The authors examine the relationship between the presence of "stars" or A-List actors in movies, and their box office performance. Their findings are that star power can reduce the uncertainty associated with box office success, but only up to a certain point - their ability to influence a film's performance in the box office is limited. The study also highlights the importance of other factors such as genre, quality, and marketing in determining box office success. Overall, the paper provides insights into the complex nature of the movie industry and the factors that influence moviegoers' decision-making.
 
 -   In 1-2 sentences, explain how your research question builds on / is different than the article you have cited.
 
