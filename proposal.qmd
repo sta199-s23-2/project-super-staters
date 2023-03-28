@@ -22,11 +22,11 @@ library(tidyverse)
 
 -   State when and how it was originally collected (by the original data curator, not necessarily how you found the data).
 
-    There were several curators for this dataset---the Million Song Dataset used a company called the Echo Nest to derive data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening. It was collected in 2011.\*\*
+    There were several curators for this dataset---the Million Song Dataset used a company called the Echo Nest to derive data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011.
 
 -   Write a brief description of the observations.
 
-    A brief description of the observations in this data set is that there are different songs associated by a song ID and their respective artists that also have an artist ID.
+    A brief description of the observations in this data set is that there are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID.
 
 ## Research question
 
@@ -38,7 +38,9 @@ library(tidyverse)
 
     We will take a look at the relationship between the tempos of songs and their popularity by four specific genres (rap, techno, country, rock) associated with the artists. After looking into this relationship, we will be able to establish if certain genres are more or less popular due to faster or slower tempos. We predict that rock and techno songs will have a strong positive relationship between tempo and popularity and that rap and country will still have a positive relationship, but not a strong one.
 
--   Identify the types of variables in your research question. Categorical? Quantitative?The categorical variable is genre associated with artist (artist.terms). The quantitative variables are tempo and popularity.
+-   Identify the types of variables in your research question. Categorical? Quantitative?
+
+    The categorical variable is genre associated with artist (artist.terms). The quantitative variables are tempo and popularity.
 
 ## Literature
 
@@ -139,19 +141,15 @@ glimpse(coffee)
 
 -   A well formulated research question. (You may include more than one research question if you want to receive feedback on different ideas for your project. However, one per data set is required.)
 
-    Are factors like average time spent playing the entire game or whether a game is available on multiple platforms associated with the sales performance of a video game, and if so, what variable has the largest correlation?
+    Is average time spent playing the entire game or whether a game is available on multiple platforms associated with the sales performance of a video game, and if so, what variable has the largest correlation?
 
 -   A description of the research topic along with a concise statement of your hypotheses on this topic.
 
-    Our research topic considers how different factors, like time spent playing a video game or its availability, affect the game's sales performance. Total sales of the game is measured in millions of dollars, availability is measured on whether the game is available on multiple platforms, with a value of "True" if it is and "False" if it isn't, and time is measured in hours. Our hypothesis is ??????????? NOT FNISHED HERE NOT FINISHED HERE
+    Our research topic considers how different factors, like time spent playing a video game or its availability, affect the game's sales performance. Total sales of the game is measured in millions of dollars, availability is measured on whether the game is available on multiple platforms, with a value of "True" if it is and "False" if it isn't, and time is measured in hours. We believe that the availability of a game on multiple platforms will have a higher correlation with sales performance than the average time spent playing the entire game will have with sales performance.
 
 -   Identify the types of variables in your research question. Categorical? Quantitative?
 
-    Average time (and all variables measuring time): Quantitative, continuous 
-
-    Sales performance: Quantitative, continuous 
-
-    If a game is available on multiple platforms: Categorical, true or false
+    Average time and all variables measuring time are quantitative and continuous variables. Sales performance is a quantitative and continuous variable. Whether the game is available on multiple platforms is a categorical, true or false variable.
 
 ## Literature
 
