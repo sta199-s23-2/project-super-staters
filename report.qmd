@@ -7,19 +7,6 @@ execute:
   echo: true
 ---
 
-
 **Introduction and data**\
 
-The source of this data is the Million Song Dataset. The National Science
-Foundation's project IIS-0713334 funded the Million Song Dataset with a grant.
-There were several curators for this dataset\-\--the Million Song Dataset used a
-company called the Echo Nest to derive global data points about one million
-contemporary songs. It was also a collaboration between the Echo Nest and
-LabROSA (laboratory working towards intelligent machine listening). It was
-collected in 2011. There are 10,000 observations with different songs
-associated by a song ID and their respective artists that also have an artist
-ID. Every observation is also defined by several variables such as artist
-familiarity, song loudness, song tempo, and many more. It is important to note
-that there are no audios in this dataset, only the derived features.
-
-
+The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset\-\--the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
