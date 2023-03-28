@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Team member 1: Natalia Hauser is a Junior majoring in Sociology and a minor in Music. Natalia’s food hot take is that picky eaters need to grow up.\nTeam member 2: Katherine Jonas is a Freshman majoring in Computer Science. Katherine’s food hot take is that salsa will replace ketchup.\nTeam member 3: Diane Lin is a Freshman majoring in Psychology. Diane’s food hot take is she thinks plain oatmeal is the best flavor.\nTeam member 4: Logan Evans is a Sophomore majoring in Environmental Science and Earth and Climate Science. Logan’s food hot take is that mayo is highly overrated.\nTeam member 5: Lewis Zhu …"
+    "text": "This project was developed by Super Staters For STA 199: Introduction to Data Science at Duke University. The team is comprised of the following team members.\n\nTeam member 1: Natalia Hauser is a Junior majoring in Sociology and a minor in Music. Natalia’s food hot take is that picky eaters need to grow up.\nTeam member 2: Katherine Jonas is a Freshman majoring in Computer Science. Katherine’s food hot take is that salsa will replace ketchup.\nTeam member 3: Diane Lin is a Freshman majoring in Psychology. Diane’s food hot take is she thinks plain oatmeal is the best flavor.\nTeam member 4: Logan Evans is a Sophomore majoring in Environmental Science and Earth and Climate Science. Logan’s food hot take is that mayo is highly overrated.\nTeam member 5: Lewis Zhu …"
   },
   {
     "objectID": "index.html",
@@ -109,6 +109,6 @@
     "href": "report.html",
     "title": "Project title",
     "section": "",
-    "text": "Add project writeup here."
+    "text": "Data\nThe source of this data is the Million Song Dataset. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features."
   }
 ]
