@@ -10,3 +10,38 @@ execute:
 **Introduction and data**\
 
 The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset\-\--the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
+
+**Research Question**
+
+Given a genre associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
+
+**Methodology**
+
+-   Ask Ed: Prediction? Inference? Both?
+
+```{r}
+#| label: load-data
+
+library(tidyverse)
+
+music <- read_csv("data/music.csv")
+music_interested <- music |>
+  filter(str_detect(artist.terms, "rock"),
+         str_detect(artist.terms, "rap"),
+         str_detect(artist.terms, "techno"),
+         str_detect(artist.terms, "country"))
+```
+
+```{r}
+#| label: tempo-rock
+
+music |> 
+  filter(song.hotttnesss >= 0,
+         str_detect(artist.terms, "rock")) |>
+  ggplot(
+    aes(x = song.tempo, y = song.hotttnesss)) +
+  geom_point()
+  
+```
+
+ask Ed: what to do w/ 0s...
