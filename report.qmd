@@ -45,3 +45,8 @@ music |>
 ```
 
 ask Ed: what to do w/ 0s...
+
+
+we can filter out 0s for visualization (but should include 0s for analysis)
+
+- try taking logs and pattern may become clearer (may not be linear)
