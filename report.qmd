@@ -37,14 +37,35 @@ music_filter <- music |>
          str_detect(artist.terms, "pop") |
          str_detect(artist.terms, "country"))
 
+music_filter$rock_genre <- if_else(
+  grepl("rock", music_filter$artist.terms), 
+        "rock", "not rock")
+
+music_filter$rap_genre <- if_else(
+  grepl("rap", music_filter$artist.terms), 
+        "rap", "not rap")
+
+music_filter$pop_genre <- if_else(
+  grepl("pop", music_filter$artist.terms), 
+        "pop", "not pop")
+
+music_filter$country_genre <- if_else(
+  grepl("country", music_filter$artist.terms), 
+        "country", "not country")
+
+music_filter <- music_filter |>
+  mutate(artist.terms = if_else(rock_genre == "rock", "Rock",
+                        if_else(rap_genre == "rap", "Rap",
+                        if_else(pop_genre == "pop", "Pop",
+                        if_else(country_genre == "country", "Country", "")))))
+
 ```
 
 ```{r}
-#| label: tempo-rock-nonzero
+#| label: tempo-by-genre
 
 music_filter |> 
-  filter(song.hotttnesss >= 0,
-         str_detect(artist.terms, "rap")) |>
+  filter(song.hotttnesss >= 0) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
   labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
