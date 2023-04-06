@@ -87,7 +87,9 @@ music_filter |>
          str_detect(artist.terms, "country")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",   title = "The Relationship Between Song Tempo and Popularity for Country Music") +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", 
+       title = "The Relationship Between Song Tempo 
+and Popularity for Country Music") +
   geom_point() +
   geom_smooth(method = lm, se = F)
 ```
