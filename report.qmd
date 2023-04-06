@@ -15,7 +15,6 @@ Previous literature exists about the topic. "Prediction of product success: expl
 
 Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor's thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf
 
-
 **Research Question**
 
 Given a genre associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
@@ -30,18 +29,19 @@ Given a genre associated with an artist (artist.terms), how are the relationship
 library(tidyverse)
 
 music <- read_csv("data/music.csv")
-music_interested <- music |>
-  filter(str_detect(artist.terms, "rock"),
-         str_detect(artist.terms, "rap"),
-         str_detect(artist.terms, "techno"),
+music_filter <- music |>
+  filter(str_detect(artist.terms, "rock") |
+         str_detect(artist.terms, "rap") |
+         str_detect(artist.terms, "techno") |
          str_detect(artist.terms, "country"))
+
 ```
 
 ```{r}
-#| label: tempo-rock
+#| label: tempo-rock-nonzero
 
-music |> 
-  filter(song.hotttnesss >= 0,
+music_filter |> 
+  filter(song.hotttnesss > 0,
          str_detect(artist.terms, "rock")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
