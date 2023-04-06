@@ -8,3 +8,52 @@ execute:
 ---
 
 The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset---the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
+
+**Introduction and data**\
+
+The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset\-\--the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
+
+Previous literature exists about the topic. "Prediction of product success: explaining song popularity by audio features from Spotify data" attempts to explore the relation between song attributes such as tempo and key signature, as well as the number of plays on Spotify, the popular music-streaming platform. This paper uses a dataset of 1000 songs to investigate this question. Ultimately, the researchers find that there is only a fairly limited relation between song popularity (measured in stream count) and song features. In particular, the paper finds that tempo, which is the variable that we are most interested in, has no significant relation to stream count. Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if a relation can be found conditional upon the genre (not an audio feature) associated with the artist a song.
+
+Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor's thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf
+
+
+**Research Question**
+
+Given a genre associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
+
+**Methodology**
+
+-   Ask Ed: Prediction? Inference? Both?
+
+```{r}
+#| label: load-data
+
+library(tidyverse)
+
+music <- read_csv("data/music.csv")
+music_interested <- music |>
+  filter(str_detect(artist.terms, "rock"),
+         str_detect(artist.terms, "rap"),
+         str_detect(artist.terms, "techno"),
+         str_detect(artist.terms, "country"))
+```
+
+```{r}
+#| label: tempo-rock
+
+music |> 
+  filter(song.hotttnesss >= 0,
+         str_detect(artist.terms, "rock")) |>
+  ggplot(
+    aes(x = song.tempo, y = song.hotttnesss)) +
+  geom_point()
+  
+```
+
+ask Ed: what to do w/ 0s...
+
+we can filter out 0s for visualization (but should include 0s for analysis)
+
+-   try taking logs and pattern may become clearer (may not be linear)
+
