@@ -43,17 +43,41 @@ music_filter <- music |>
 #| label: tempo-rock-nonzero
 
 music_filter |> 
-  filter(song.hotttnesss > 0,
-         str_detect(artist.terms, "rock")) |>
+  filter(song.hotttnesss >= 0,
+         str_detect(artist.terms, "rap")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
-  geom_point()
+  geom_point() +
+  geom_smooth(method = lm, se = F)
   
 ```
 
-ask Ed: what to do w/ 0s...
+```{r}
+music_filter |> 
+  filter(song.hotttnesss >= 0,
+         str_detect(artist.terms, "rock")) |>
+  ggplot(
+    aes(x = song.tempo, y = song.hotttnesss)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F)
+```
 
-we can filter out 0s for visualization (but should include 0s for analysis)
+```{r}
+music_filter |> 
+  filter(song.hotttnesss >= 0,
+         str_detect(artist.terms, "techno")) |>
+  ggplot(
+    aes(x = song.tempo, y = song.hotttnesss)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F)
+```
 
--   try taking logs and pattern may become clearer (may not be linear)
-
+```{r}
+music_filter |> 
+  filter(song.hotttnesss >= 0,
+         str_detect(artist.terms, "country")) |>
+  ggplot(
+    aes(x = song.tempo, y = song.hotttnesss)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F)
+```
