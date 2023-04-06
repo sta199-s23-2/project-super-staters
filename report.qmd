@@ -47,7 +47,9 @@ music_filter |>
          str_detect(artist.terms, "rap")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", title = "The Relationship Between Song Tempo and Popularity for Rap Music" ) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Tempo
+and Popularity for Rap Music") +
   geom_point() +
   geom_smooth(method = lm, se = F)
   
@@ -61,7 +63,9 @@ music_filter |>
          str_detect(artist.terms, "rock")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", title = "The Relationship Between Song Tempo and Popularity for Rock Music" ) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Tempo 
+and Popularity for Rock Music" ) +
   geom_point() +
   geom_smooth(method = lm, se = F)
 ```
@@ -74,7 +78,9 @@ music_filter |>
          str_detect(artist.terms, "pop")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", title = "The Relationship Between Song Tempo and Popularity for Pop Music" ) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Tempo 
+and Popularity for Pop Music" ) +
   geom_point() +
   geom_smooth(method = lm, se = F)
 ```
