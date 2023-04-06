@@ -34,7 +34,7 @@ music <- read_csv("data/music.csv")
 music_filter <- music |>
   filter(str_detect(artist.terms, "rock") |
          str_detect(artist.terms, "rap") |
-         str_detect(artist.terms, "techno") |
+         str_detect(artist.terms, "pop") |
          str_detect(artist.terms, "country"))
 
 ```
@@ -53,6 +53,8 @@ music_filter |>
 ```
 
 ```{r}
+#| label: rock-v-tempo
+
 music_filter |> 
   filter(song.hotttnesss >= 0,
          str_detect(artist.terms, "rock")) |>
@@ -63,9 +65,11 @@ music_filter |>
 ```
 
 ```{r}
+#| label: pop-v-tempo
+
 music_filter |> 
   filter(song.hotttnesss >= 0,
-         str_detect(artist.terms, "techno")) |>
+         str_detect(artist.terms, "pop")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
   geom_point() +
@@ -73,6 +77,8 @@ music_filter |>
 ```
 
 ```{r}
+#| label: country-v-tempo
+
 music_filter |> 
   filter(song.hotttnesss >= 0,
          str_detect(artist.terms, "country")) |>
