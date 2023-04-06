@@ -19,7 +19,7 @@ Nijkamp, R. (2018). Prediction of product success: explaining song popularity by
 
 **Research Question**
 
-Given a genre associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
+Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
 
 **Methodology**
 
@@ -47,6 +47,7 @@ music_filter |>
          str_detect(artist.terms, "rap")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", title = "The Relationship Between Song Tempo and Popularity for Rap Music" ) +
   geom_point() +
   geom_smooth(method = lm, se = F)
   
@@ -60,6 +61,7 @@ music_filter |>
          str_detect(artist.terms, "rock")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", title = "The Relationship Between Song Tempo and Popularity for Rock Music" ) +
   geom_point() +
   geom_smooth(method = lm, se = F)
 ```
@@ -72,6 +74,7 @@ music_filter |>
          str_detect(artist.terms, "pop")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", title = "The Relationship Between Song Tempo and Popularity for Pop Music" ) +
   geom_point() +
   geom_smooth(method = lm, se = F)
 ```
@@ -84,6 +87,7 @@ music_filter |>
          str_detect(artist.terms, "country")) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
+  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",   title = "The Relationship Between Song Tempo and Popularity for Country Music") +
   geom_point() +
   geom_smooth(method = lm, se = F)
 ```
