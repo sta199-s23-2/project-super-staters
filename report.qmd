@@ -62,7 +62,7 @@ music_filter <- music_filter |>
 ```
 
 ```{r}
-#| label: tempo-by-genre
+#| label: By-genre
 
 music_filter |> 
   filter(song.hotttnesss >= 0) |>
@@ -70,53 +70,9 @@ music_filter |>
     aes(x = song.tempo, y = song.hotttnesss)) +
   labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
        title = "The Relationship Between Song Tempo
-and Popularity for Rap Music") +
+and Popularity by Genre") +
   geom_point() +
-  geom_smooth(method = lm, se = F)
+  geom_smooth(method = lm, se = F) +
+  facet_wrap(~ artist.terms)
   
-```
-
-```{r}
-#| label: rock-v-tempo
-
-music_filter |> 
-  filter(song.hotttnesss >= 0,
-         str_detect(artist.terms, "rock")) |>
-  ggplot(
-    aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
-       title = "The Relationship Between Song Tempo 
-and Popularity for Rock Music" ) +
-  geom_point() +
-  geom_smooth(method = lm, se = F)
-```
-
-```{r}
-#| label: pop-v-tempo
-
-music_filter |> 
-  filter(song.hotttnesss >= 0,
-         str_detect(artist.terms, "pop")) |>
-  ggplot(
-    aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
-       title = "The Relationship Between Song Tempo 
-and Popularity for Pop Music" ) +
-  geom_point() +
-  geom_smooth(method = lm, se = F)
-```
-
-```{r}
-#| label: country-v-tempo
-
-music_filter |> 
-  filter(song.hotttnesss >= 0,
-         str_detect(artist.terms, "country")) |>
-  ggplot(
-    aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)", 
-       title = "The Relationship Between Song Tempo 
-and Popularity for Country Music") +
-  geom_point() +
-  geom_smooth(method = lm, se = F)
 ```
