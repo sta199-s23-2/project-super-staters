@@ -62,17 +62,67 @@ music_filter <- music_filter |>
 ```
 
 ```{r}
-#| label: By-genre
+#| label: tempo-by-genre
 
 music_filter |> 
   filter(song.hotttnesss >= 0) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
-  labs(x = "tempo (BPM)", y = "song popularity (rated from 0-1)",
-       title = "The Relationship Between Song Tempo
-and Popularity by Genre") +
   geom_point() +
   geom_smooth(method = lm, se = F) +
-  facet_wrap(~ artist.terms)
+  facet_wrap(~ artist.terms) +
+  labs(x = "Tempo (BPM)", y = "Song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Tempo
+       and Popularity by Genre")
+  
+```
+
+```{r}
+#| label: duration-by-genre
+
+music_filter |> 
+  filter(song.hotttnesss >= 0,
+         song.duration < 1000) |>
+  ggplot(
+    aes(x = song.duration, y = song.hotttnesss)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  facet_wrap(~ artist.terms) +
+  labs(x = "Duration (seconds)", y = "Song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Duration
+       and Popularity by Genre")
+  
+```
+
+```{r}
+#| label: familiarity-by-genre
+
+music_filter |> 
+  filter(song.hotttnesss >= 0) |>
+  ggplot(
+    aes(x = artist.familiarity, y = song.hotttnesss)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  facet_wrap(~ artist.terms) +
+  labs(x = "Familiarity (0-1 scale)", y = "Song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Duration
+       and Popularity by Genre")
+  
+```
+
+```{r}
+#| label: year-by-genre
+
+music_filter |> 
+  filter(song.hotttnesss >= 0,
+         song.year > 0) |>
+  ggplot(
+    aes(x = song.year, y = song.hotttnesss)) +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  facet_wrap(~ artist.terms) +
+  labs(x = "Year", y = "Song popularity (rated from 0-1)",
+       title = "The Relationship Between Song Duration
+       and Popularity by Genre")
   
 ```
