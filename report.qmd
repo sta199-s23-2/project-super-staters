@@ -79,13 +79,14 @@ music_filter |>
        and Popularity by Genre")
   
 ```
+All of the genres have a positive relationship with song tempo except for rap which has a negative relationship. Thus, we predict that faster songs are on average more popular. 
 
 ```{r}
 #| label: duration-by-genre
 
 music_filter |> 
   filter(song.hotttnesss >= 0,
-         song.duration < 1000) |>
+         song.duration < 600) |>
   ggplot(
     aes(x = song.duration, y = song.hotttnesss)) +
   geom_point() +
@@ -96,6 +97,7 @@ music_filter |>
        and Popularity by Genre")
   
 ```
+We filtered for songs under 10 minutes because there were several outliers. For rap, there was no relation on average between duration and popularity as the linear fit line was flat. For the other three genres, there was a positive relationship between duration and popularity. Thus, we predict that longer songs are on average more popular for country, pop and rock. 
 
 ```{r}
 #| label: familiarity-by-genre
@@ -108,11 +110,11 @@ music_filter |>
   geom_smooth(method = lm, se = F) +
   facet_wrap(~ artist.terms) +
   labs(x = "Familiarity (0-1 scale)", y = "Song popularity (rated from 0-1)",
-       title = "The Relationship Between Song Duration
+       title = "The Relationship Between Artist Familiarity
        and Popularity by Genre")
   
 ```
-
+Based on our linear models, there is a positive relationship between artist familiarity and song popularity for all four genres. Thus, we predict that songs by artists that listeners are more familiar with are more popular. 
 ```{r}
 #| label: year-by-genre
 
@@ -125,10 +127,12 @@ music_filter |>
   geom_smooth(method = lm, se = F) +
   facet_wrap(~ artist.terms) +
   labs(x = "Year", y = "Song popularity (rated from 0-1)",
-       title = "The Relationship Between Song Duration
+       title = "The Relationship Between Song Year
        and Popularity by Genre")
   
 ```
+For song year and popularity, visually there appears to be a weak positive relationship for all genres except rap which has a negative correlation. Thus, we predict that for country, pop and rock the more recent the song was released the more popular it is on average. For rap, older songs on average appear to be more popular. 
+
 
 
 Finally, we run interactive regression models to measure the interactive effect between artist.terms (genre associated with an artist) and respective song attributes on song popularity (song.hotttnesss). We believe that an interactive model is useful in answering our research question because we are interested in the extent to which different song attributes predict song popularity, based on the genre associated with the artist. The predictions made by our interactive model can thus be broken down into the different predicted effects for each genre, which directly helps us answer our research question. Additionally, we are able to calculate the AIC and adjusted R-squared value of each model to determine which model is the greatest fit, and thus which may possibly have the most significant predictve power, which will also help us answer our question of the extent to which different song attributes predict song popularity.
@@ -157,7 +161,7 @@ $\widehat{song.hotttness} = -0.371 + 0.475 + (-0.000534 -0.00113) * song.tempo =
 Rock:
 $\widehat{song.hotttness} = -0.371 + 0.301 + (-0.000534 + 0.000115) * song.tempo = -0.07 - 0.000419 * song.tempo$
 
-(Interpretation?)
+
 
 
 ```{r}
@@ -184,7 +188,7 @@ $\widehat{song.hotttness} = -0.949 + 1.08 + (0.00267 - 0.00363) * song.duration 
 Rock:
 $\widehat{song.hotttness} = -0.949 + 0.758 + (0.00267 - 0.00239) * song.duration = -0.191 + 0.00028 * song.duration$
 
-(Interpretation?)
+
 
 ```{r}
 #| label: int-model-familiarity
@@ -210,7 +214,7 @@ $\widehat{song.hotttness} = -0.958 + 0.836 + (1.01 - 0.977) * artist.familiarity
 Rock:
 $\widehat{song.hotttness} = -0.958 + 0.299 + (1.01 - 0.135) * artist.familiarity = -0.659 + 0.875 * artist.familiarity$
 
-(Interpretation?)
+
 
 ```{r}
 #| label: int-model-year
@@ -236,7 +240,7 @@ $\widehat{song.hotttness} = -0.470 + 0.251 + (0.0000399 + 0.0000755) * song.year
 Rock:
 $\widehat{song.hotttness} = -0.470 + 0.182 + (0.0000399 + 0.000105) * song.year = -0.288 + 0.0001449 * song.year$
 
-(Interpretation?)
+
 
 ```{r}
 #| label: aic-r-sq
@@ -254,4 +258,4 @@ glance(int_model_year)$adj.r.squared
 glance(int_model_year)$AIC
 ```
 
-(interpretation)
+Based on our interaction models and the AIC and adjusted r.squared values, year and song popularity had the lowest AIC, making it the best fit model of our song attributes. It is difficult to compared which coefficient was the highest due to the difference in units of our attributes. So, based on AIC how recently a song was released (song.year) has the strongest correlation to popularity. 
