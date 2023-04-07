@@ -7,11 +7,11 @@ execute:
   echo: true
 ---
 
-The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset---the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
+The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset---the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity (the extent to which an artist's listeners are familiar with an artist's music), song tempo, song duration, year of a song's release, and many more. It is important to note that there are no audios in this dataset, only the derived features.
 
-**Introduction and data**\
+**Introduction and data**
 
-The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset\-\--the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
+The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset; the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
 
 Previous literature exists about the topic. "Prediction of product success: explaining song popularity by audio features from Spotify data" attempts to explore the relation between song attributes such as tempo and key signature, as well as the number of plays on Spotify, the popular music-streaming platform. This paper uses a dataset of 1000 songs to investigate this question. Ultimately, the researchers find that there is only a fairly limited relation between song popularity (measured in stream count) and song features. In particular, the paper finds that tempo, which is the variable that we are most interested in, has no significant relation to stream count. Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if a relation can be found conditional upon the genre (not an audio feature) associated with the artist a song.
 
@@ -19,11 +19,11 @@ Nijkamp, R. (2018). Prediction of product success: explaining song popularity by
 
 **Research Question**
 
-Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
+Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, artist.familiarity, song.year) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
 
 **Methodology**
 
--   Ask Ed: Prediction? Inference? Both?
+We first load our data.
 
 ```{r}
 #| label: load-data
@@ -61,6 +61,8 @@ music_filter <- music_filter |>
                         if_else(country_genre == "country", "Country", "")))))
 
 ```
+
+Next, we plot linear regressions visually over a scatterplot to show the relation between four different song attributes (listed in our research question) and song popularity by our four genres of interest. We do this to get a general sense of how the song attributes might predict song popularity, which will help us answer our research question of how much each song attribute is correlated with a song's popularity.
 
 ```{r}
 #| label: tempo-by-genre
@@ -128,15 +130,19 @@ music_filter |>
   
 ```
 
+
+Finally, we run interactive regression models to measure the interactive effect between artist.terms (genre associated with an artist) and respective song attributes on song popularity (song.hotttnesss). We believe that an interactive model is useful in answering our research question because we are interested in the extent to which different song attributes predict song popularity, based on the genre associated with the artist. The predictions made by our interactive model can thus be broken down into the different predicted effects for each genre, which directly helps us answer our research question. Additionally, we are able to calculate the AIC and adjusted R-squared value of each model to determine which model is the greatest fit, and thus which may possibly have the most significant predictve power, which will also help us answer our question of the extent to which different song attributes predict song popularity.
+
 ```{r}
 #| label: int-model-tempo
 
-
 int_model_tempo <- linear_reg() |>
   set_engine("lm") |>
-  fit(
-    song.hotttnesss ~ artist.terms * song.tempo, data = music_filter) |>
-    tidy()
+  fit(song.hotttnesss ~ artist.terms * song.tempo, data = music_filter)
+    
+tidy(int_model_tempo)
+glance(int_model_tempo)$adj.r.squared
+glance(int_model_tempo)$AIC
 ```
 
 
@@ -145,21 +151,23 @@ int_model_tempo <- linear_reg() |>
 
 int_model_duration <- linear_reg() |>
   set_engine("lm") |>
-  fit(
-    song.hotttnesss ~ artist.terms * song.duration, data = music_filter) |>
-    tidy()
+  fit(song.hotttnesss ~ artist.terms * song.duration, data = music_filter)
+    
+tidy(int_model_duration)
+glance(int_model_duration)$adj.r.squared
+glance(int_model_duration)$AIC
 ```
 
 ```{r}
-
 #| label: int-model-familiarity
-
 
 int_model_familiarity <- linear_reg() |>
   set_engine("lm") |>
-  fit(
-    song.hotttnesss ~ artist.terms * artist.familiarity, data = music_filter) |>
-    tidy()
+  fit(song.hotttnesss ~ artist.terms * artist.familiarity, data = music_filter)
+    
+tidy(int_model_familiarity)
+glance(int_model_familiarity)$adj.r.squared
+glance(int_model_familiarity)$AIC
 ```
 
 ```{r}
@@ -167,9 +175,11 @@ int_model_familiarity <- linear_reg() |>
 
 int_model_year <- linear_reg() |>
   set_engine("lm") |>
-  fit(
-    song.hotttnesss ~ artist.terms * song.year, data = music_filter) |>
-    tidy()
+  fit(song.hotttnesss ~ artist.terms * song.year, data = music_filter)
+
+tidy(int_model_year)
+glance(int_model_year)$adj.r.squared
+glance(int_model_year)$AIC
 ```
 
 
