@@ -122,6 +122,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -184,13 +185,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>The source of this data is the Million Song Dataset. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.</p>
+<p>The source of this data is the Million Song Dataset. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity (the extent to which an artist’s listeners are familiar with an artist’s music), song tempo, song duration, year of a song’s release, and many more. It is important to note that there are no audios in this dataset, only the derived features.</p>
 <p><strong>Introduction and data</strong></p>
 <p>The source of this data is the Million Song Dataset. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset; the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.</p>
 <p>Previous literature exists about the topic. “Prediction of product success: explaining song popularity by audio features from Spotify data” attempts to explore the relation between song attributes such as tempo and key signature, as well as the number of plays on Spotify, the popular music-streaming platform. This paper uses a dataset of 1000 songs to investigate this question. Ultimately, the researchers find that there is only a fairly limited relation between song popularity (measured in stream count) and song features. In particular, the paper finds that tempo, which is the variable that we are most interested in, has no significant relation to stream count. Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if a relation can be found conditional upon the genre (not an audio feature) associated with the artist a song.</p>
 <p>Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor’s thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf</p>
 <p><strong>Research Question</strong></p>
-<p>Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, song.loudness) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?</p>
+<p>Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, artist.familiarity, song.year) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?</p>
 <p><strong>Methodology</strong></p>
 <p>We first load our data.</p>
 <div class="cell">
@@ -221,7 +222,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ dplyr::lag()      masks stats::lag()
 ✖ yardstick::spec() masks readr::spec()
 ✖ recipes::step()   masks stats::step()
-• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+• Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>music <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/music.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -262,7 +263,7 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">if_else</span>(pop_genre <span class="sc">==</span> <span class="st">"pop"</span>, <span class="st">"Pop"</span>,</span>
 <span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">if_else</span>(country_genre <span class="sc">==</span> <span class="st">"country"</span>, <span class="st">"Country"</span>, <span class="st">""</span>)))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Next, we plot a linear regression to show the relation between four different song attributes and song popularity by our four genres of interest.</p>
+<p>Next, we plot linear regressions visually over a scatterplot to show the relation between four different song attributes (listed in our research question) and song popularity by our four genres of interest. We do this to get a general sense of how the song attributes might predict song popularity, which will help us answer our research question of how much each song attribute is correlated with a song’s popularity.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>music_filter <span class="sc">|&gt;</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(song.hotttnesss <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
@@ -337,7 +338,11 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 <p><img src="report_files/figure-html/year-by-genre-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Finally, we run interactive regression models to measure the interactive effect between artist.terms and respective song attributes on song popularity (song.hotttnesss).</p>
+<p>Finally, we run interactive regression models to measure the interactive effect between artist.terms (genre associated with an artist) and respective song attributes on song popularity (song.hotttnesss). We believe that an interactive model is useful in answering our research question because we are interested in the extent to which different song attributes predict song popularity, based on the genre associated with the artist. The predictions made by our interactive model can thus be broken down into the different predicted effects for each genre, which directly helps us answer our research question. Additionally, we are able to calculate the AIC and adjusted R-squared value of each model to determine which model is the greatest fit, and thus which may possibly have the most significant predictve power, which will also help us answer our question of the extent to which different song attributes predict song popularity.</p>
+<p>Pop: <span class="math inline">\(\widehat{song.hotttness} = -0.370642967 + -0.215690672 * artist.terms + -0.000534460 * song.tempo + artist.terms * song.tempo * 0.003030734\)</span></p>
+<p>Rap: <span class="math inline">\(\widehat{song.hotttness} = -0.370642967 + 0.475038439 * artist.terms + -0.000534460 * song.tempo + artist.terms * song.tempo * -0.001126495\)</span></p>
+<p>Rock: <span class="math inline">\(\widehat{song.hotttness} = -0.370642967 + 0.301058002 * artist.terms + -0.000534460 * song.tempo + artist.terms * song.tempo * 0.000115371\)</span></p>
+<p>The genre country would be represented if the artist.terms and song.tempo were zero.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>int_model_tempo <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
@@ -357,17 +362,21 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 7 artist.termsRap:song.tempo  -0.00113    0.00176   -0.640   0.522 
 8 artist.termsRock:song.tempo  0.000115   0.00149    0.0777  0.938 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_tempo)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_tempo)<span class="sc">$</span>adj.r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02185871</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_tempo)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6570.11</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>int_model_duration <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(song.hotttnesss <span class="sc">~</span> artist.terms <span class="sc">*</span> song.duration, <span class="at">data =</span> music_filter)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(int_model_duration)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>int_model_duration <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(song.hotttnesss <span class="sc">~</span> artist.terms <span class="sc">*</span> song.duration, <span class="at">data =</span> music_filter)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(int_model_duration)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 5
   term                           estimate std.error statistic     p.value
@@ -381,17 +390,21 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 7 artist.termsRap:song.duration  -0.00363  0.00108      -3.36 0.000797   
 8 artist.termsRock:song.duration -0.00239  0.000940     -2.54 0.0112     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_duration)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_duration)<span class="sc">$</span>adj.r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02191869</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_duration)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6569.921</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>int_model_familiarity <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(song.hotttnesss <span class="sc">~</span> artist.terms <span class="sc">*</span> artist.familiarity, <span class="at">data =</span> music_filter)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(int_model_familiarity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>int_model_familiarity <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(song.hotttnesss <span class="sc">~</span> artist.terms <span class="sc">*</span> artist.familiarity, <span class="at">data =</span> music_filter)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(int_model_familiarity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 5
   term                                estimate std.error statistic     p.value
@@ -405,17 +418,21 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 7 artist.termsRap:artist.familiarity   -0.977      0.429    -2.28  0.0229     
 8 artist.termsRock:artist.familiarity  -0.135      0.355    -0.379 0.705      </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_familiarity)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_familiarity)<span class="sc">$</span>adj.r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06255506</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_familiarity)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6439.477</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>int_model_year <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(song.hotttnesss <span class="sc">~</span> artist.terms <span class="sc">*</span> song.year, <span class="at">data =</span> music_filter)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(int_model_year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>int_model_year <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(song.hotttnesss <span class="sc">~</span> artist.terms <span class="sc">*</span> song.year, <span class="at">data =</span> music_filter)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(int_model_year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 5
   term                         estimate std.error statistic  p.value
@@ -429,7 +446,11 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 7 artist.termsRap:song.year   0.0000755 0.0000607     1.24  2.14e- 1
 8 artist.termsRock:song.year  0.000105  0.0000500     2.10  3.60e- 2</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_year)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_year)<span class="sc">$</span>adj.r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07099238</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(int_model_year)<span class="sc">$</span>AIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6411.685</code></pre>
 </div>
