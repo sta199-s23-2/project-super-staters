@@ -133,16 +133,6 @@ music_filter |>
 
 Finally, we run interactive regression models to measure the interactive effect between artist.terms (genre associated with an artist) and respective song attributes on song popularity (song.hotttnesss). We believe that an interactive model is useful in answering our research question because we are interested in the extent to which different song attributes predict song popularity, based on the genre associated with the artist. The predictions made by our interactive model can thus be broken down into the different predicted effects for each genre, which directly helps us answer our research question. Additionally, we are able to calculate the AIC and adjusted R-squared value of each model to determine which model is the greatest fit, and thus which may possibly have the most significant predictve power, which will also help us answer our question of the extent to which different song attributes predict song popularity.
 
-Pop:
-$\widehat{song.hotttness} = -0.370642967 + -0.215690672 * artist.terms + -0.000534460 * song.tempo + artist.terms * song.tempo * 0.003030734$
-
-Rap:
-$\widehat{song.hotttness} = -0.370642967 + 0.475038439 * artist.terms + -0.000534460 * song.tempo + artist.terms * song.tempo * -0.001126495$
-
-Rock:
-$\widehat{song.hotttness} = -0.370642967 + 0.301058002 * artist.terms + -0.000534460 * song.tempo + artist.terms * song.tempo * 0.000115371$
-
-The genre country would be represented if the artist.terms and song.tempo were zero.
 ```{r}
 #| label: int-model-tempo
 
@@ -151,9 +141,23 @@ int_model_tempo <- linear_reg() |>
   fit(song.hotttnesss ~ artist.terms * song.tempo, data = music_filter)
     
 tidy(int_model_tempo)
-glance(int_model_tempo)$adj.r.squared
-glance(int_model_tempo)$AIC
 ```
+
+From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
+
+Country:
+$\widehat{song.hotttness} = -0.370642967 -0.000534460 * song.tempo$
+
+Pop:
+$\widehat{song.hotttness} = -0.370642967 - 0.215690672 + (-0.000534460 + 0.00303) * song.tempo = -0.586333639 + 0.00249554* song.tempo$
+
+Rap:
+$\widehat{song.hotttness} = -0.370642967 + 0.475038439 + (-0.000534460 -0.001126495) * song.tempo = 0.104395472 - 0.001660955 * song.tempo$
+
+Rock:
+$\widehat{song.hotttness} = -0.370642967 + 0.301058002 + (-0.000534460 + 0.000115371) * song.tempo = -0.069584965 - 0.000419089 * song.tempo$
+
+(Interpretation?)
 
 
 ```{r}
@@ -164,9 +168,23 @@ int_model_duration <- linear_reg() |>
   fit(song.hotttnesss ~ artist.terms * song.duration, data = music_filter)
     
 tidy(int_model_duration)
-glance(int_model_duration)$adj.r.squared
-glance(int_model_duration)$AIC
 ```
+
+From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
+
+Country:
+$\widehat{song.hotttness} = -0.949 + 0.00267 * song.duration$
+
+Pop:
+$\widehat{song.hotttness} = -0.949 + 0.712 + (0.00267 - 0.00285) * song.duration = -0.237 - 0.00018 * song.duration$
+
+Rap:
+$\widehat{song.hotttness} = -0.949 + 1.08 + (0.00267 - 0.00363) * song.duration = 0.131 - 0.00096 * song.duration$
+
+Rock:
+$\widehat{song.hotttness} = -0.949 + 0.758 + (0.00267 - 0.00239) * song.duration = -0.191 + 0.00028 * song.duration$
+
+(Interpretation?)
 
 ```{r}
 #| label: int-model-familiarity
@@ -176,9 +194,23 @@ int_model_familiarity <- linear_reg() |>
   fit(song.hotttnesss ~ artist.terms * artist.familiarity, data = music_filter)
     
 tidy(int_model_familiarity)
-glance(int_model_familiarity)$adj.r.squared
-glance(int_model_familiarity)$AIC
 ```
+
+From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
+
+Country:
+$\widehat{song.hotttness} = -0.958 + 1.01 * artist.familiarity$
+
+Pop:
+$\widehat{song.hotttness} = -0.958 - 0.0320 + (1.01 + 0.175) * artist.familiarity = -0.99 +  1.185 * artist.familiarity$
+
+Rap:
+$\widehat{song.hotttness} = -0.958 + 0.836 + (1.01 - 0.977) * artist.familiarity = -0.122 + 0.033 * artist.familiarity$
+
+Rock:
+$\widehat{song.hotttness} = -0.958 + 0.299 + (1.01 - 0.135) * artist.familiarity = -0.659 + 0.875 * artist.familiarity$
+
+(Interpretation?)
 
 ```{r}
 #| label: int-model-year
@@ -188,8 +220,38 @@ int_model_year <- linear_reg() |>
   fit(song.hotttnesss ~ artist.terms * song.year, data = music_filter)
 
 tidy(int_model_year)
+```
+
+From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
+
+Country:
+$\widehat{song.hotttness} = -0.470 + 0.0000399 * song.year$
+
+Pop:
+$\widehat{song.hotttness} = -0.470 - 0.0288 + (0.0000399 + 0.000187) * song.year = -0.4988 +  0.0002269 * song.year$
+
+Rap:
+$\widehat{song.hotttness} = -0.470 + 0.251 + (0.0000399 + 0.0000755) * song.year = -0.219 + 0.0001154 * song.year$
+
+Rock:
+$\widehat{song.hotttness} = -0.470 + 0.182 + (0.0000399 + 0.000105) * song.year = -0.288 + 0.0001449 * song.year$
+
+(Interpretation?)
+
+```{r}
+#| label: aic-r-sq
+
+glance(int_model_tempo)$adj.r.squared
+glance(int_model_tempo)$AIC
+
+glance(int_model_duration)$adj.r.squared
+glance(int_model_duration)$AIC
+
+glance(int_model_familiarity)$adj.r.squared
+glance(int_model_familiarity)$AIC
+
 glance(int_model_year)$adj.r.squared
 glance(int_model_year)$AIC
 ```
 
-
+(interpretation)
