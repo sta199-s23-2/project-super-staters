@@ -29,6 +29,7 @@ Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of ob
 #| label: load-data
 
 library(tidyverse)
+library(tidymodels)
 
 music <- read_csv("data/music.csv")
 music_filter <- music |>
@@ -126,3 +127,49 @@ music_filter |>
        and Popularity by Genre")
   
 ```
+
+```{r}
+#| label: int-model-tempo
+
+
+int_model_tempo <- linear_reg() |>
+  set_engine("lm") |>
+  fit(
+    song.hotttnesss ~ artist.terms * song.tempo, data = music_filter) |>
+    tidy()
+```
+
+
+```{r}
+#| label: int-model-duration
+
+int_model_duration <- linear_reg() |>
+  set_engine("lm") |>
+  fit(
+    song.hotttnesss ~ artist.terms * song.duration, data = music_filter) |>
+    tidy()
+```
+
+```{r}
+
+#| label: int-model-familiarity
+
+
+int_model_familiarity <- linear_reg() |>
+  set_engine("lm") |>
+  fit(
+    song.hotttnesss ~ artist.terms * artist.familiarity, data = music_filter) |>
+    tidy()
+```
+
+```{r}
+#| label: int-model-year
+
+int_model_year <- linear_reg() |>
+  set_engine("lm") |>
+  fit(
+    song.hotttnesss ~ artist.terms * song.year, data = music_filter) |>
+    tidy()
+```
+
+
