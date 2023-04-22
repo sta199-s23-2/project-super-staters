@@ -9,19 +9,21 @@ execute:
 
 The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset---the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity (the extent to which an artist's listeners are familiar with an artist's music), song tempo, song duration, year of a song's release, and many more. It is important to note that there are no audios in this dataset, only the derived features.
 
-**Introduction and data**
+## Introduction and data
 
-The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset; the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. It is important to note that there are no audios in this dataset, only the derived features.
+The source of this data is the Million Song Dataset. The National Science Foundation's project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset; the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. Note that there are no audios in this dataset, only the derived features. Note that there are also no ethical concerns, as no personal data was collected for this dataset.
 
 Previous literature exists about the topic. "Prediction of product success: explaining song popularity by audio features from Spotify data" attempts to explore the relation between song attributes such as tempo and key signature, as well as the number of plays on Spotify, the popular music-streaming platform. This paper uses a dataset of 1000 songs to investigate this question. Ultimately, the researchers find that there is only a fairly limited relation between song popularity (measured in stream count) and song features. In particular, the paper finds that tempo, which is the variable that we are most interested in, has no significant relation to stream count. Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if a relation can be found conditional upon the genre (not an audio feature) associated with the artist a song.
 
 Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor's thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf
 
-**Research Question**
+## Research Question and Hypotheses
 
-Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the relationships between different song attributes (such as song.tempo, song.duration, artist.familiarity, song.year) related to song popularity (song.hotttnesss)? Do these relations differ for artists associated with different genres?
+Given a genre (Rock, Pop, Rap, or Country, chosen for their sizable amount of observations within the data set), associated with an artist (artist.terms), how are the different song attributes (such as song.tempo, song.duration, artist.familiarity, song.year) related to song popularity (song.hotttnesss)? Do these relationships differ for artists associated with different genres?
 
-**Methodology**
+We predict that rock and pop songs will have a strong positive relationship between tempo and popularity and that rap and country will still have a positive relationship, but not a strong one. We also predict that there will between year and popularity, since we expect more recent songs to be more popular. We do not predict the relationship between different song attributes and song popularity will differ for artists associated with different genres.
+
+## Methodology
 
 We first load our data.
 
@@ -32,14 +34,17 @@ library(tidyverse)
 library(tidymodels)
 
 music <- read_csv("data/music.csv")
+
+# keep only genres of interest
 music_filter <- music |>
   filter(str_detect(artist.terms, "rock") |
          str_detect(artist.terms, "rap") |
          str_detect(artist.terms, "pop") |
          str_detect(artist.terms, "country"))
 
+# create dummy variables for each genre
 music_filter$rock_genre <- if_else(
-  grepl("rock", music_filter$artist.terms), 
+  grepl("rock", music_filter$artist.terms), # [1], see citation
         "rock", "not rock")
 
 music_filter$rap_genre <- if_else(
@@ -54,7 +59,12 @@ music_filter$country_genre <- if_else(
   grepl("country", music_filter$artist.terms), 
         "country", "not country")
 
+# use dummy variables to get rid of sub-genres in artist.terms 
+# this is done so we can facet_wrap our visualizations later
+# we also keep only observations with songgg.hotttness >= 0,
+# since negative song popularity should be on a scale from 0 to 1, as defined
 music_filter <- music_filter |>
+  filter(song.hotttnesss >= 0) |>
   mutate(artist.terms = if_else(rock_genre == "rock", "Rock",
                         if_else(rap_genre == "rap", "Rap",
                         if_else(pop_genre == "pop", "Pop",
@@ -62,13 +72,14 @@ music_filter <- music_filter |>
 
 ```
 
+**Visualizations**
+
 Next, we plot linear regressions visually over a scatterplot to show the relation between four different song attributes (listed in our research question) and song popularity by our four genres of interest. We do this to get a general sense of how the song attributes might predict song popularity, which will help us answer our research question of how much each song attribute is correlated with a song's popularity.
 
 ```{r}
 #| label: tempo-by-genre
 
 music_filter |> 
-  filter(song.hotttnesss >= 0) |>
   ggplot(
     aes(x = song.tempo, y = song.hotttnesss)) +
   geom_point() +
@@ -85,8 +96,7 @@ All of the genres have a positive relationship with song tempo except for rap wh
 #| label: duration-by-genre
 
 music_filter |> 
-  filter(song.hotttnesss >= 0,
-         song.duration < 600) |>
+  filter(song.duration < 600) |>
   ggplot(
     aes(x = song.duration, y = song.hotttnesss)) +
   geom_point() +
@@ -97,13 +107,12 @@ music_filter |>
        and Popularity by Genre")
   
 ```
-We filtered for songs under 10 minutes because there were several outliers. For rap, there was no relation on average between duration and popularity as the linear fit line was flat. For the other three genres, there was a positive relationship between duration and popularity. Thus, we predict that longer songs are on average more popular for country, pop and rock. 
+We filtered for songs under 10 minutes because there were several outliers which made visualization difficult; omitting these allow our visualizations to be much more easy to interpret. For rap, there was no relation on average between duration and popularity as the linear fit line was flat. For the other three genres, there was a positive relationship between duration and popularity. Thus, we predict that longer songs are on average more popular for country, pop and rock. 
 
 ```{r}
 #| label: familiarity-by-genre
 
 music_filter |> 
-  filter(song.hotttnesss >= 0) |>
   ggplot(
     aes(x = artist.familiarity, y = song.hotttnesss)) +
   geom_point() +
@@ -119,8 +128,7 @@ Based on our linear models, there is a positive relationship between artist fami
 #| label: year-by-genre
 
 music_filter |> 
-  filter(song.hotttnesss >= 0,
-         song.year > 0) |>
+  filter(song.year > 0) |>
   ggplot(
     aes(x = song.year, y = song.hotttnesss)) +
   geom_point() +
@@ -133,10 +141,11 @@ music_filter |>
 ```
 For song year and popularity, visually there appears to be a weak positive relationship for all genres except rap which has a negative correlation. Thus, we predict that for country, pop and rock the more recent the song was released the more popular it is on average. For rap, older songs on average appear to be more popular. 
 
+**Interactive models and goodness of fit**
 
+Finally, we run interactive regression models to measure the interactive effect between artist.terms (genre associated with an artist) and respective song attributes on song popularity (song.hotttnesss). We believe that an interactive model is useful in answering our research question because we are interested in the extent to which different song attributes predict song popularity, based on the genre associated with the artist. We have decided to not use an additive model since this would only be able to tell us the estimated average impact of changes in song attributes on song popularity, holding genre constant. This clearly does not answer our research question, since we are interested in how the relation between song attributes and song popularity change (or do not change). Thus, we are using an interactive model, in particular to answer the second part of our research question ("Do these relationships differ for artists associated with different genres?"). The predictions made by our interactive model can thus be broken down into the different predicted effects for each genre, which directly helps us answer our research question. Additionally, we are able to calculate the AIC and adjusted R-squared value of each model to determine which model is the greatest fit, and thus which may possibly have the most significant predictive power, which will also help us answer our question of the extent to which different song attributes predict song popularity.
 
-Finally, we run interactive regression models to measure the interactive effect between artist.terms (genre associated with an artist) and respective song attributes on song popularity (song.hotttnesss). We believe that an interactive model is useful in answering our research question because we are interested in the extent to which different song attributes predict song popularity, based on the genre associated with the artist. The predictions made by our interactive model can thus be broken down into the different predicted effects for each genre, which directly helps us answer our research question. Additionally, we are able to calculate the AIC and adjusted R-squared value of each model to determine which model is the greatest fit, and thus which may possibly have the most significant predictve power, which will also help us answer our question of the extent to which different song attributes predict song popularity.
-
+**Interactive model with artist.terms and song.tempo as explanatory variables:**
 ```{r}
 #| label: int-model-tempo
 
@@ -150,20 +159,22 @@ tidy(int_model_tempo)
 From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
 
 Country:
-$\widehat{song.hotttness} = -0.371 -0.000534 * song.tempo$
+
+$\widehat{song.hotttness} = 0.194 + 0.000691 * song.tempo$
 
 Pop:
-$\widehat{song.hotttness} = -0.371 - 0.216 + (-0.000534 + 0.00303) * song.tempo = -0.587 + 0.002496* song.tempo$
+
+$\widehat{song.hotttness} = 0.194 + 0.139 + (0.000691 - 0.000135) * song.tempo = 0.333 + 0.000556* song.tempo$
 
 Rap:
-$\widehat{song.hotttness} = -0.371 + 0.475 + (-0.000534 -0.00113) * song.tempo = 0.104 - 0.001664 * song.tempo$
+
+$\widehat{song.hotttness} = 0.194 + 0.237 + (0.000691 - 0.000937) * song.tempo = 0.431 - 0.001664 * song.tempo$
 
 Rock:
-$\widehat{song.hotttness} = -0.371 + 0.301 + (-0.000534 + 0.000115) * song.tempo = -0.07 - 0.000419 * song.tempo$
 
+$\widehat{song.hotttness} = 0.194 + 0.104 + (0.000691 + 0.000109) * song.tempo = 0.298 + 0.0008 * song.tempo$
 
-
-
+**Interactive model with artist.terms and song.duration as explanatory variables:**
 ```{r}
 #| label: int-model-duration
 
@@ -177,19 +188,22 @@ tidy(int_model_duration)
 From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
 
 Country:
-$\widehat{song.hotttness} = -0.949 + 0.00267 * song.duration$
+
+$\widehat{song.hotttness} = 0.0892 + 0.000910 * song.duration$
 
 Pop:
-$\widehat{song.hotttness} = -0.949 + 0.712 + (0.00267 - 0.00285) * song.duration = -0.237 - 0.00018 * song.duration$
+
+$\widehat{song.hotttness} = 0.0892 + 0.326 + (0.000910 - 0.000959) * song.duration = 0.4152 - 0.000049 * song.duration$
 
 Rap:
-$\widehat{song.hotttness} = -0.949 + 1.08 + (0.00267 - 0.00363) * song.duration = 0.131 - 0.00096 * song.duration$
+
+$\widehat{song.hotttness} = 0.0892 + 0.315 + (0.000910 - 0.000922) * song.duration = 0.131 - 0.000012 * song.duration$
 
 Rock:
-$\widehat{song.hotttness} = -0.949 + 0.758 + (0.00267 - 0.00239) * song.duration = -0.191 + 0.00028 * song.duration$
 
+$\widehat{song.hotttness} = 0.0892 + 0.262 + (0.000910 - 0.000723) * song.duration = -0.191 + 0.000187 * song.duration$
 
-
+**Interactive model with artist.terms and artist.familiarity as explanatory variables:**
 ```{r}
 #| label: int-model-familiarity
 
@@ -203,45 +217,55 @@ tidy(int_model_familiarity)
 From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
 
 Country:
-$\widehat{song.hotttness} = -0.958 + 1.01 * artist.familiarity$
+
+$\widehat{song.hotttness} = -0.107 + 0.707 * artist.familiarity$
 
 Pop:
-$\widehat{song.hotttness} = -0.958 - 0.0320 + (1.01 + 0.175) * artist.familiarity = -0.99 +  1.185 * artist.familiarity$
+
+$\widehat{song.hotttness} = -0.107 - 0.0285 + (0.707 + 0.143) * artist.familiarity = -0.1355 +  0.85 * artist.familiarity$
 
 Rap:
-$\widehat{song.hotttness} = -0.958 + 0.836 + (1.01 - 0.977) * artist.familiarity = -0.122 + 0.033 * artist.familiarity$
+
+$\widehat{song.hotttness} = -0.107 + 0.0842 + (0.707 - 0.0904) * artist.familiarity = -0.0228 + 0.6166 * artist.familiarity$
 
 Rock:
-$\widehat{song.hotttness} = -0.958 + 0.299 + (1.01 - 0.135) * artist.familiarity = -0.659 + 0.875 * artist.familiarity$
 
+$\widehat{song.hotttness} = -0.107 - 0.0401 + (0.707 + 0.171) * artist.familiarity = -0.1471 + 0.878 * artist.familiarity$
 
-
+**Interactive model with artist.terms and song.year as explanatory variables:**
 ```{r}
 #| label: int-model-year
 
+music_years_filtered <- music_filter |>
+  filter(song.year > 0)
+
 int_model_year <- linear_reg() |>
   set_engine("lm") |>
-  fit(song.hotttnesss ~ artist.terms * song.year, data = music_filter)
+  fit(song.hotttnesss ~ artist.terms * song.year, data = music_years_filtered)
 
 tidy(int_model_year)
 ```
 
-From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
+Note that we filter out all songs with song.year = 0 so that we do not have incorrect data that skews our results. From the above regression, we are getting the following estimations for each genre (where Country is our "baseline" genre):
 
 Country:
-$\widehat{song.hotttness} = -0.470 + 0.0000399 * song.year$
+
+$\widehat{song.hotttness} = -2.23 + 0.00133 * song.year$
 
 Pop:
-$\widehat{song.hotttness} = -0.470 - 0.0288 + (0.0000399 + 0.000187) * song.year = -0.4988 +  0.0002269 * song.year$
+
+$\widehat{song.hotttness} = -2.23 + 0.951 + (0.00133 - 0.000434) * song.year = -1.279 +  0.000896 * song.year$
 
 Rap:
-$\widehat{song.hotttness} = -0.470 + 0.251 + (0.0000399 + 0.0000755) * song.year = -0.219 + 0.0001154 * song.year$
+
+$\widehat{song.hotttness} = -2.23 + 16.5 + (0.00133 - 0.00822) * song.year = 14.27 - 0.00689 * song.year$
 
 Rock:
-$\widehat{song.hotttness} = -0.470 + 0.182 + (0.0000399 + 0.000105) * song.year = -0.288 + 0.0001449 * song.year$
+
+$\widehat{song.hotttness} = -2.23 + 0.712 + (0.00133 - 0.000325) * song.year = -1.518 + 0.001005 * song.year$
 
 
-
+**AIC and R-squared**
 ```{r}
 #| label: aic-r-sq
 
@@ -258,4 +282,10 @@ glance(int_model_year)$adj.r.squared
 glance(int_model_year)$AIC
 ```
 
+## Discussion
+
 Based on our interaction models and the AIC and adjusted r.squared values, year and song popularity had the lowest AIC, making it the best fit model of our song attributes. It is difficult to compared which coefficient was the highest due to the difference in units of our attributes. So, based on AIC how recently a song was released (song.year) has the strongest correlation to popularity. 
+
+## Citations
+
+[1] https://campus.datacamp.com/courses/intermediate-r/chapter-5-utilities?ex=8
