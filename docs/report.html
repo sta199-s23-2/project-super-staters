@@ -195,12 +195,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>The source of this data is the Million Song Dataset. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity (the extent to which an artist’s listeners are familiar with an artist’s music), song tempo, song duration, year of a song’s release, and many more. It is important to note that there are no audios in this dataset, only the derived features.</p>
+<p>The source of this data is the Million Song Dataset [1]. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset—the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity (the extent to which an artist’s listeners are familiar with an artist’s music), song tempo, song duration, year of a song’s release, and many more. It is important to note that there are no audios in this dataset, only the derived features.</p>
 <section id="introduction-and-data" class="level2">
 <h2 class="anchored" data-anchor-id="introduction-and-data">Introduction and data</h2>
 <p>The source of this data is the Million Song Dataset. The National Science Foundation’s project IIS-0713334 funded the Million Song Dataset with a grant. There were several curators for this dataset; the Million Song Dataset used a company called the Echo Nest to derive global data points about one million contemporary songs. It was also a collaboration between the Echo Nest and LabROSA (laboratory working towards intelligent machine listening). It was collected in 2011. There are 10,000 observations with different songs associated by a song ID and their respective artists that also have an artist ID. Every observation is also defined by several variables such as artist familiarity, song loudness, song tempo, and many more. Note that there are no audios in this dataset, only the derived features. Note that there are also no ethical concerns, as no personal data was collected for this dataset.</p>
 <p>Previous literature exists about the topic. “Prediction of product success: explaining song popularity by audio features from Spotify data” attempts to explore the relation between song attributes such as tempo and key signature, as well as the number of plays on Spotify, the popular music-streaming platform. This paper uses a dataset of 1000 songs to investigate this question. Ultimately, the researchers find that there is only a fairly limited relation between song popularity (measured in stream count) and song features. In particular, the paper finds that tempo, which is the variable that we are most interested in, has no significant relation to stream count. Our research question builds on this article because we are similarly looking into audio features (like tempo) that make songs more popular but going further to see if a relation can be found conditional upon the genre (not an audio feature) associated with the artist a song.</p>
-<p>Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor’s thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf</p>
+<p>[2] Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor’s thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf</p>
 </section>
 <section id="research-question-and-hypotheses" class="level2">
 <h2 class="anchored" data-anchor-id="research-question-and-hypotheses">Research Question and Hypotheses</h2>
@@ -238,7 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ✖ dplyr::lag()      masks stats::lag()
 ✖ yardstick::spec() masks readr::spec()
 ✖ recipes::step()   masks stats::step()
-• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+• Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>music <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/music.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -260,7 +260,7 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummy variables for each genre</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>music_filter<span class="sc">$</span>rock_genre <span class="ot">&lt;-</span> <span class="fu">if_else</span>(</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grepl</span>(<span class="st">"rock"</span>, music_filter<span class="sc">$</span>artist.terms), <span class="co"># [1], see citation</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grepl</span>(<span class="st">"rock"</span>, music_filter<span class="sc">$</span>artist.terms), <span class="co"># [3], see citation</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rock"</span>, <span class="st">"not rock"</span>)</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>music_filter<span class="sc">$</span>rap_genre <span class="ot">&lt;-</span> <span class="fu">if_else</span>(</span>
@@ -531,7 +531,9 @@ dbl (31): artist.familiarity, artist.hotttnesss, artist.latitude, artist.loc...
 </section>
 <section id="citations" class="level2">
 <h2 class="anchored" data-anchor-id="citations">Citations</h2>
-<p>[1] https://campus.datacamp.com/courses/intermediate-r/chapter-5-utilities?ex=8</p>
+<p>[1] https://corgis-edu.github.io/corgis/csv/music/</p>
+<p>[2] Nijkamp, R. (2018). Prediction of product success: explaining song popularity by audio features from Spotify data (Bachelor’s thesis, University of Twente). http://essay.utwente.nl/75422/1/NIJKAMP_BA_IBA.pdf</p>
+<p>[3] https://campus.datacamp.com/courses/intermediate-r/chapter-5-utilities?ex=8</p>
 
 
 </section>
